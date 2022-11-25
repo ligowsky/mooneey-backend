@@ -57,6 +57,14 @@ namespace Mooneey.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpDelete("{id:guid}", Name = "Delete")]
+        public async Task<IActionResult> DeleteAsync(Guid id, [FromBody] AccountUpdateRequest request)
+        {
+            await _repository.DeleteAsync(id);
+
+            return Ok();
+        }
     }
 }
 
