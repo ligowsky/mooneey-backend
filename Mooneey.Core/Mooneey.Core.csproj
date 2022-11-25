@@ -12,6 +12,9 @@
     <None Remove="Enums\" />
     <None Remove="Interfaces\" />
     <None Remove="Models\Requests\" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Contexts\" />
+    <None Remove="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -19,5 +22,10 @@
     <Folder Include="Enums\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Models\Requests\" />
+    <Folder Include="Contexts\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
   </ItemGroup>
 </Project>

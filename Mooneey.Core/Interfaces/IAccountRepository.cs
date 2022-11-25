@@ -6,10 +6,10 @@ namespace Mooneey.Core.Interfaces
 {
 	public interface IAccountRepository
 	{
-		Task<IEnumerable<Account>> GetAccountsAsync();
+		Task<List<Account>> GetAccountsAsync();
 		Task<Account> GetAccountAsync(Guid accountId);
 		Task<Account> CreateAccountAsync(AccountCreateRequest account);
-        Task<Account> UpdateAccountAsync(AccountUpdateRequest account);
+        Task<Account> UpdateAccountAsync(Guid accountId, AccountUpdateRequest account);
         Task DeleteAccountAsync(Guid accountId);
 	}
 }
