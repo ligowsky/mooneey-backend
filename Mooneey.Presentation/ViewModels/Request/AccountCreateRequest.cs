@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using Mooneey.Core.Enums;
+using Mooneey.Core.Models.Entities;
+using Mooneey.Presentation.ViewModels.Entity;
 
-namespace Mooneey.Core.Models.Requests
+namespace Mooneey.Presentation.ViewModels.Request
 {
 	public class AccountCreateRequest
 	{
@@ -17,6 +19,14 @@ namespace Mooneey.Core.Models.Requests
 
 		[JsonPropertyName("balance")]
 		public decimal Balance { get; set; }
-	}
+
+        public static Account ToDomain(AccountCreateRequest account) => new()
+        {
+            AccountType = account.AccountType,
+            Name = account.Name,
+            Currency = account.Currency,
+            Balance = account.Balance,
+        };
+    }
 }
 

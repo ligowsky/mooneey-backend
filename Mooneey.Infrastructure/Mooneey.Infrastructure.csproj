@@ -14,6 +14,7 @@
     <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Migrations\" />
+    <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Persistence\" />
@@ -21,6 +22,7 @@
     <Folder Include="Persistence\Contexts\" />
     <Folder Include="Persistence\Extensions\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mooneey.Core\Mooneey.Core.csproj" />

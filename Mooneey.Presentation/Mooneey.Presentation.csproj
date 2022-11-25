@@ -7,10 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Models\" />
+    <None Remove="Extensions\" />
+    <None Remove="ViewModels\" />
+    <None Remove="ViewModels\Request\" />
+    <None Remove="ViewModels\Entity\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="ViewModels\Request\" />
+    <Folder Include="ViewModels\Entity\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mooneey.Core\Mooneey.Core.csproj" />

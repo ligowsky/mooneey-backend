@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Mooneey.Core.Contexts;
 using Mooneey.Core.Interfaces;
 using Mooneey.Core.Models.Entities;
-using Mooneey.Core.Models.Requests;
 
 namespace Mooneey.Core.Repositories
 {
@@ -34,25 +33,15 @@ namespace Mooneey.Core.Repositories
             return account;
         }
 
-        public async Task<Account> CreateAccountAsync(AccountCreateRequest accountCreateRequest)
+        public async Task<Account> CreateAccountAsync(Account account)
         {
-            var account = new Account()
-            {
-                AccountType = accountCreateRequest.AccountType,
-                Name = accountCreateRequest.Name,
-                Currency = accountCreateRequest.Currency,
-                Balance = accountCreateRequest.Balance,
-                CreatedAt = new DateTime(),
-                UpdatedAt = new DateTime()
-            };
-
             await _db.Set<Account>().AddAsync(account);
             await _db.SaveChangesAsync();
 
             return account;
         }
 
-        public async Task<Account> UpdateAccountAsync(Guid accountId, AccountUpdateRequest accountUpdateRequest)
+        public async Task<Account> UpdateAccountAsync(Guid accountId, Account account)
         {
             var existingAccount = await _db.Set<Account>()
                  .Where(a => a.Id == accountId)
@@ -63,16 +52,8 @@ namespace Mooneey.Core.Repositories
                 throw new Exception($"Account with id = '{accountId}' was not found.");
             }
 
-            var account = new Account()
-            {
-                Id = existingAccount.Id,
-                AccountType = accountUpdateRequest.AccountType,
-                Name = accountUpdateRequest.Name,
-                Currency = accountUpdateRequest.Currency,
-                Balance = accountUpdateRequest.Balance,
-                CreatedAt = existingAccount.CreatedAt,
-                UpdatedAt = new DateTime()
-            };
+            account.Id = accountId;
+            account.UpdatedAt = DateTime.UtcNow;
 
             await _db.Set<Account>().AddAsync(account);
             await _db.SaveChangesAsync();
