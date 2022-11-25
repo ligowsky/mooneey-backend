@@ -1,9 +1,7 @@
-﻿using System;
-namespace Mooneey.Core.Models.Entities
+﻿namespace Mooneey.Core.Domain.Models.Entities
 {
-	public class Category : EntityBase
-	{
-		public string? Name { get; set; }
-	}
+    public class Category : EntityBase
+    {
+        public string? Name { get; set; }
+    }
 }
-

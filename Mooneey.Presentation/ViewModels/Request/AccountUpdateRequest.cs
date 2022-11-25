@@ -1,35 +1,32 @@
-﻿using System;
-using System.Text.Json.Serialization;
-using Mooneey.Core.Enums;
-using Mooneey.Core.Models.Entities;
+﻿using System.Text.Json.Serialization;
+using Mooneey.Core.Domain.Enums;
+using Mooneey.Core.Domain.Models.Entities;
 
-namespace Mooneey.Presentation.ViewModels.Request
+namespace Mooneey.Presentation.ViewModels.Request;
+
+public class AccountUpdateRequest
 {
-	public class AccountUpdateRequest
-	{
-        [JsonPropertyName("id")]
-        public Guid Id { get; set; }
+    [JsonPropertyName("id")] 
+    public Guid Id { get; }
 
-        [JsonPropertyName("type")]
-		public AccountTypeEnum AccountType { get; set; }
+    [JsonPropertyName("type")] 
+    public AccountTypeEnum AccountType { get; }
 
-		[JsonPropertyName("name")]
-		public string? Name { get; set; }
+    [JsonPropertyName("name")] 
+    public string? Name { get; }
 
-		[JsonPropertyName("currency")]
-		public CurrencyEnum Currency { get; set; }
+    [JsonPropertyName("currency")] 
+    public CurrencyEnum Currency { get; }
 
-		[JsonPropertyName("balance")]
-		public decimal Balance { get; set; }
+    [JsonPropertyName("balance")] 
+    public decimal Balance { get; }
 
-        public static Account ToDomain(AccountUpdateRequest account) => new()
-        {
-            Id = account.Id,
-            AccountType = account.AccountType,
-            Name = account.Name,
-            Currency = account.Currency,
-            Balance = account.Balance
-        };
-    }
+    public static Account ToDomain(AccountUpdateRequest account) => new()
+    {
+        Id = account.Id,
+        AccountType = account.AccountType,
+        Name = account.Name,
+        Currency = account.Currency,
+        Balance = account.Balance
+    };
 }
-

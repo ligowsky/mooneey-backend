@@ -1,10 +1,7 @@
-﻿using System;
-namespace Mooneey.Core.Enums
-{
-	public enum TransactionTypeEnum
-	{
-		Expense = 1,
-		Income = 2
-    }
-}
+﻿namespace Mooneey.Core.Domain.Enums;
 
+public enum TransactionTypeEnum
+{
+	Expense = 1,
+	Income = 2
+}

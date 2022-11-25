@@ -1,19 +1,14 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Mooneey.Core.Interfaces;
-using Mooneey.Core.Repositories;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Mooneey.Core.Application.Interfaces;
+using Mooneey.Core.Application.Repositories;
 
-namespace Mooneey.Core.Aoolication.Extensions
+namespace Mooneey.Core.Application.Extensions;
+
+public static class AddRepositoriesExtension
 {
-    public static class AddRepositoriesExtension
+    public static void AddRepositories(this IServiceCollection services)
     {
-        public static IServiceCollection AddRepositories(this IServiceCollection services)
-        {
-            services.AddTransient<IAccountRepository, AccountRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-
-            return services;
-        }
+        services.AddTransient<IAccountRepository, AccountRepository>();
+        services.AddTransient<ICategoryRepository, CategoryRepository>();
     }
 }
-
