@@ -1,0 +1,29 @@
+version: '3.4'
+services:
+  mooneey-webapi:
+    container_name: mooneey-webapi
+    image: '${DOCKER_REGISTRY-}mooneey'
+    build:
+      context: .
+      dockerfile: Mooneey.WebAPI/Dockerfile
+  mooneey-db:
+    container_name: mooneey-db
+    image: postgres
+    environment:
+      POSTGRES_USER: '${POSTGRES_USER:-postgres}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-changeme}'
+      POSTGRES_DB: mooneey
+      PGDATA: /data/postgres
+    volumes:
+      - mooneey-db:/data/postgres
+    ports:
+      - '5432:5432'
+    networks:
+      - mooneey-db
+    restart: unless-stopped
+networks:
+  mooneey-db:
+    driver: bridge
+
+volumes:
+    mooneey-db:
