@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1703.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{4B1C5DE8-EC41-4134-B9FD-262B365390AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mooneey.WebAPI", "Mooney.WebAPI\Mooneey.WebAPI.csproj", "{4B1C5DE8-EC41-4134-B9FD-262B365390AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

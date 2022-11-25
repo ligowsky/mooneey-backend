@@ -1,4 +1,4 @@
-﻿namespace WebAPI;
+﻿namespace Mooneey.WebAPI;
 
 public class WeatherForecast
 {
