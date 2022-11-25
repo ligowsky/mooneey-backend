@@ -13,6 +13,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mooneey.Infrastructure", "Mooneey.Infrastructure\Mooneey.Infrastructure.csproj", "{6A18D9D9-7AD8-4651-9AA7-487BE561F871}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mooneey.Presentation", "Mooneey.Presentation\Mooneey.Presentation.csproj", "{1BBCDFB3-6339-4CE4-B583-C647672EB38B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{6A18D9D9-7AD8-4651-9AA7-487BE561F871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A18D9D9-7AD8-4651-9AA7-487BE561F871}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A18D9D9-7AD8-4651-9AA7-487BE561F871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BBCDFB3-6339-4CE4-B583-C647672EB38B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BBCDFB3-6339-4CE4-B583-C647672EB38B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BBCDFB3-6339-4CE4-B583-C647672EB38B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BBCDFB3-6339-4CE4-B583-C647672EB38B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
