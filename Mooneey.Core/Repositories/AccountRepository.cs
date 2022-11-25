@@ -41,7 +41,9 @@ namespace Mooneey.Core.Repositories
                 AccountType = accountCreateRequest.AccountType,
                 Name = accountCreateRequest.Name,
                 Currency = accountCreateRequest.Currency,
-                Balance = accountCreateRequest.Balance
+                Balance = accountCreateRequest.Balance,
+                CreatedAt = new DateTime(),
+                UpdatedAt = new DateTime()
             };
 
             await _db.Set<Account>().AddAsync(account);
@@ -63,11 +65,13 @@ namespace Mooneey.Core.Repositories
 
             var account = new Account()
             {
-                Id = accountUpdateRequest.Id,
+                Id = existingAccount.Id,
                 AccountType = accountUpdateRequest.AccountType,
                 Name = accountUpdateRequest.Name,
                 Currency = accountUpdateRequest.Currency,
-                Balance = accountUpdateRequest.Balance
+                Balance = accountUpdateRequest.Balance,
+                CreatedAt = existingAccount.CreatedAt,
+                UpdatedAt = new DateTime()
             };
 
             await _db.Set<Account>().AddAsync(account);
