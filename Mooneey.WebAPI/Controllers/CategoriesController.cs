@@ -45,7 +45,7 @@ namespace Mooneey.WebAPI.Controllers
             var createdRecord = await _repository.CreateAsync(record);
             var result = CategoryViewModel.FromDomain(createdRecord);
 
-            return CreatedAtRoute("GetById", new { Id = result.Id }, result);
+            return CreatedAtRoute("GetCategoryById", new { Id = result.Id }, result);
         }
 
         [HttpPut("{id:guid}", Name = "UpdateCategory")]

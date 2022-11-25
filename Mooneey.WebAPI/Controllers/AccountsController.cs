@@ -45,7 +45,7 @@ namespace Mooneey.WebAPI.Controllers
             var createdRecord = await _repository.CreateAsync(record);
             var result = AccountViewModel.FromDomain(createdRecord);
 
-            return CreatedAtRoute("GetById", new { Id = result.Id }, result);
+            return CreatedAtRoute("GetAccountById", new { Id = result.Id }, result);
         }
 
         [HttpPut("{id:guid}", Name = "UpdateAccount")]
