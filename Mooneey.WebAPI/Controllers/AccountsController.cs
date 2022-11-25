@@ -23,8 +23,8 @@ namespace Mooneey.WebAPI.Controllers
         [HttpGet(Name = "GetAll")]
         public async Task<IActionResult> GetAllAsync()
         {
-            var accounts = await _repository.GetAllAsync();
-            var result = accounts.Select(account => AccountViewModel.FromDomain(account));
+            var records = await _repository.GetAllAsync();
+            var result = records.Select(record => AccountViewModel.FromDomain(record));
 
             return Ok(result);
         }
@@ -32,8 +32,8 @@ namespace Mooneey.WebAPI.Controllers
         [HttpGet("{id:guid}", Name = "GetById")]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var account = await _repository.GetByIdAsync(id);
-            var result = AccountViewModel.FromDomain(account);
+            var record = await _repository.GetByIdAsync(id);
+            var result = AccountViewModel.FromDomain(record);
 
             return Ok(result);
         }
@@ -41,9 +41,9 @@ namespace Mooneey.WebAPI.Controllers
         [HttpPost(Name = "Create")]
         public async Task<IActionResult> CreateAsync([FromBody] AccountCreateRequest request)
         {
-            var account = AccountCreateRequest.ToDomain(request);
-            var createdAccount = await _repository.CreateAsync(account);
-            var result = AccountViewModel.FromDomain(createdAccount);
+            var record = AccountCreateRequest.ToDomain(request);
+            var createdRecord = await _repository.CreateAsync(record);
+            var result = AccountViewModel.FromDomain(createdRecord);
 
             return CreatedAtRoute("GetById", new { Id = result.Id }, result);
         }
@@ -51,9 +51,9 @@ namespace Mooneey.WebAPI.Controllers
         [HttpPut("{id:guid}", Name = "Update")]
         public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] AccountUpdateRequest request)
         {
-            var account = AccountUpdateRequest.ToDomain(request);
-            var updatedAccount = await _repository.UpdateAsync(id, account);
-            var result = AccountViewModel.FromDomain(updatedAccount);
+            var record = AccountUpdateRequest.ToDomain(request);
+            var updatedRecord = await _repository.UpdateAsync(id, record);
+            var result = AccountViewModel.FromDomain(updatedRecord);
 
             return Ok(result);
         }

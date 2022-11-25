@@ -9,9 +9,15 @@ namespace Mooneey.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.HasKey(a => a.Id);
+            builder.HasKey(r => r.Id);
 
-            builder.Property(a => a.Name).HasMaxLength(64);
+            builder.Property(r => r.AccountType).IsRequired();
+
+            builder.Property(r => r.Name)
+                .IsRequired()
+                .HasMaxLength(64);
+
+            builder.Property(r => r.Balance).IsRequired();
         }
     }
 }
