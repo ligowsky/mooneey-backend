@@ -23,10 +23,10 @@ namespace Mooneey.WebAPI.Controllers
         [HttpGet(Name = "GetAll")]
         public async Task<IActionResult> GetAllAsync()
         {
-            var result = await _repository.GetAccountsAsync();
-            var accounts = result.Select(account => AccountViewModel.FromDomain(account));
+            var accounts = await _repository.GetAccountsAsync();
+            var result = accounts.Select(account => AccountViewModel.FromDomain(account));
 
-            return Ok(accounts);
+            return Ok(result);
         }
 
         [HttpGet("{id:guid}", Name = "GetById")]
@@ -46,6 +46,16 @@ namespace Mooneey.WebAPI.Controllers
             var result = AccountViewModel.FromDomain(createdAccount);
 
             return CreatedAtRoute("GetById", new { Id = result.Id }, result);
+        }
+
+        [HttpPut("{id:guid}", Name = "Update")]
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] AccountUpdateRequest request)
+        {
+            var account = AccountUpdateRequest.ToDomain(request);
+            var updatedAccount = await _repository.UpdateAccountAsync(id, account);
+            var result = AccountViewModel.FromDomain(updatedAccount);
+
+            return Ok(result);
         }
     }
 }

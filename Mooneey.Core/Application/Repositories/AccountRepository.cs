@@ -52,13 +52,16 @@ namespace Mooneey.Core.Repositories
                 throw new Exception($"Account with id = '{accountId}' was not found.");
             }
 
-            account.Id = accountId;
-            account.UpdatedAt = DateTime.UtcNow;
+            existingAccount.Id = accountId;
+            existingAccount.AccountType = account.AccountType;
+            existingAccount.Name = account.Name;
+            existingAccount.Currency = account.Currency;
+            existingAccount.Balance = account.Balance;
+            existingAccount.UpdatedAt = DateTime.UtcNow;
 
-            await _db.Set<Account>().AddAsync(account);
             await _db.SaveChangesAsync();
 
-            return account;
+            return existingAccount;
         }
 
         public async Task DeleteAccountAsync(Guid accountId)
