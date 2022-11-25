@@ -12,70 +12,69 @@ namespace Mooneey.Core.Repositories
         {
         }
 
-        public async Task<List<Account>> GetAccountsAsync()
+        public async Task<List<Account>> GetAllAsync()
         {
-            var accounts = await _db.Set<Account>().ToListAsync<Account>();
+            var records = await _db.Set<Account>().ToListAsync<Account>();
 
-            return accounts;
+            return records;
         }
 
-        public async Task<Account> GetAccountAsync(Guid accountId)
+        public async Task<Account> GetByIdAsync(Guid id)
         {
-            var account = await _db.Set<Account>()
-                 .Where(a => a.Id == accountId)
+            var record = await _db.Set<Account>()
+                 .Where(a => a.Id == id)
                  .FirstOrDefaultAsync();
 
-            if (account is null)
+            if (record is null)
             {
-                throw new Exception($"Account with id = '{accountId}' was not found.");
+                throw new Exception($"Account with id = '{id}' was not found.");
             }
 
-            return account;
+            return record;
         }
 
-        public async Task<Account> CreateAccountAsync(Account account)
+        public async Task<Account> CreateAsync(Account request)
         {
-            await _db.Set<Account>().AddAsync(account);
+            await _db.Set<Account>().AddAsync(request);
             await _db.SaveChangesAsync();
 
-            return account;
+            return request;
         }
 
-        public async Task<Account> UpdateAccountAsync(Guid accountId, Account account)
+        public async Task<Account> UpdateAsync(Guid id, Account request)
         {
-            var existingAccount = await _db.Set<Account>()
-                 .Where(a => a.Id == accountId)
+            var record = await _db.Set<Account>()
+                 .Where(a => a.Id == id)
                  .FirstOrDefaultAsync();
 
-            if (existingAccount is null)
+            if (record is null)
             {
-                throw new Exception($"Account with id = '{accountId}' was not found.");
+                throw new Exception($"Account with id = '{id}' was not found.");
             }
 
-            existingAccount.Id = accountId;
-            existingAccount.AccountType = account.AccountType;
-            existingAccount.Name = account.Name;
-            existingAccount.Currency = account.Currency;
-            existingAccount.Balance = account.Balance;
-            existingAccount.UpdatedAt = DateTime.UtcNow;
+            record.AccountType = request.AccountType;
+            record.Name = request.Name;
+            record.Currency = request.Currency;
+            record.Balance = request.Balance;
+            record.UpdatedAt = DateTime.UtcNow;
 
             await _db.SaveChangesAsync();
 
-            return existingAccount;
+            return record;
         }
 
-        public async Task DeleteAccountAsync(Guid accountId)
+        public async Task DeleteAsync(Guid id)
         {
-            var account = await _db.Set<Account>()
-                .Where(a => a.Id == accountId)
+            var record = await _db.Set<Account>()
+                .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
 
-            if (account is null)
+            if (record is null)
             {
-                throw new Exception($"Account with id = '{accountId}' was not found.");
+                throw new Exception($"Account with id = '{id}' was not found.");
             }
 
-            _db.Set<Account>().Remove(account);
+            _db.Set<Account>().Remove(record);
             await _db.SaveChangesAsync();
         }
     }
