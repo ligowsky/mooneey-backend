@@ -10,6 +10,7 @@ namespace Mooneey.Core.Aoolication.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
 
             return services;
         }

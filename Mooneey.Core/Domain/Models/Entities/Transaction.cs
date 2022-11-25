@@ -12,7 +12,7 @@ namespace Mooneey.Core.Models.Entities
         public Guid AccountId { get; set; }
         public Account? Account { get; set; }
 
-        public Guid CatagiryId { get; set; }
+        public Guid CategoryId { get; set; }
         public Category? Category { get; set; }
     }
 }
