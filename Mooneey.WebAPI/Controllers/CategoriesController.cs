@@ -20,7 +20,7 @@ public class CategoriesController : Controller
     public async Task<IActionResult> GetAllAsync()
     {
         var records = await _repository.GetAllAsync();
-        var result = records.Select(record => CategoryViewModel.FromDomain(record));
+        var result = records.Select(CategoryViewModel.FromDomain);
 
         return Ok(result);
     }

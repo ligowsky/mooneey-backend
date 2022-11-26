@@ -20,7 +20,7 @@ public class AccountsController : Controller
     public async Task<IActionResult> GetAllAsync()
     {
         var records = await _repository.GetAllAsync();
-        var result = records.Select(record => AccountViewModel.FromDomain(record));
+        var result = records.Select(AccountViewModel.FromDomain);
 
         return Ok(result);
     }
