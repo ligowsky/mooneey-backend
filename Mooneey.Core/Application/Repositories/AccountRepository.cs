@@ -34,6 +34,9 @@ public class AccountRepository : RepositoryBase, IAccountRepository
 
     public async Task<Account> CreateAsync(Account request)
     {
+        request.CreatedAt = DateTime.UtcNow;
+        request.UpdatedAt = DateTime.UtcNow;
+
         await _db.Set<Account>().AddAsync(request);
         await _db.SaveChangesAsync();
 
