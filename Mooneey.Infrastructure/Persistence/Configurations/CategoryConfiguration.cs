@@ -13,5 +13,13 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.Property(r => r.Name)
             .IsRequired()
             .HasMaxLength(64);
+        
+        builder.HasMany(r => r.Transactions)
+            .WithOne(r => r.Category)
+            .HasForeignKey(r => r.CategoryId);
+
+        builder.Property(r => r.CreatedAt).IsRequired();
+
+        builder.Property(r => r.UpdatedAt).IsRequired();
     }
 }

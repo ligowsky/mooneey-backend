@@ -8,5 +8,7 @@ namespace Mooneey.Core.Domain.Models.Entities
         public string? Name { get; set; }
         public CurrencyEnum Currency { get; set; }
         public decimal Balance { get; set; }
+
+        public ICollection<Transaction>? Transactions { get; set; }
     }
 }

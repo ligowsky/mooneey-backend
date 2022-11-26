@@ -17,6 +17,7 @@
     <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Migrations" />
     <Folder Include="Persistence\" />
     <Folder Include="Persistence\Configurations\" />
     <Folder Include="Persistence\Contexts\" />

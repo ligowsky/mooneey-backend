@@ -17,5 +17,13 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
             .HasMaxLength(64);
 
         builder.Property(r => r.Balance).IsRequired();
+
+        builder.HasMany(r => r.Transactions)
+            .WithOne(r => r.Account)
+            .HasForeignKey(r => r.AccountId);
+
+        builder.Property(r => r.CreatedAt).IsRequired();
+
+        builder.Property(r => r.UpdatedAt).IsRequired();
     }
 }
