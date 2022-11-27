@@ -123,7 +123,7 @@ namespace Mooneey.Infrastructure.Migrations
                     b.HasOne("Mooneey.Core.Domain.Models.Entities.Category", "Category")
                         .WithMany("Transactions")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Account");

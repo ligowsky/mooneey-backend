@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mooneey.Infrastructure.Migrations
 {
     [DbContext(typeof(PgSqlDbContext))]
-    [Migration("20221126114211_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20221127114442_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,7 +126,7 @@ namespace Mooneey.Infrastructure.Migrations
                     b.HasOne("Mooneey.Core.Domain.Models.Entities.Category", "Category")
                         .WithMany("Transactions")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Account");
