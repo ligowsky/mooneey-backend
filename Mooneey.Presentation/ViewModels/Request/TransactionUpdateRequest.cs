@@ -6,7 +6,7 @@ namespace Mooneey.Presentation.ViewModels.Request;
 
 public class TransactionUpdateRequest
 {
-	[JsonPropertyName("accountId")]
+	[JsonPropertyName("id")]
 	public Guid Id { get; set; }
 	
 	[JsonPropertyName("type")]

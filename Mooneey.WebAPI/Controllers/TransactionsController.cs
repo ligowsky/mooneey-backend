@@ -19,8 +19,8 @@ public class TransactionsController : Controller
     [HttpGet(Name = "GetAllTransactions")]
     public async Task<IActionResult> GetAllAsync()
     {
-        var records = await _repository.GetAllAsync();
-        var result = records.Select(TransactionViewModel.FromDomain);
+        var transactions = await _repository.GetAllAsync();
+        var result = transactions.Select(TransactionViewModel.FromDomain);
 
         return Ok(result);
     }
@@ -28,8 +28,8 @@ public class TransactionsController : Controller
     [HttpGet("{id:guid}", Name = "GetTransactionById")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {
-        var record = await _repository.GetByIdAsync(id);
-        var result = TransactionViewModel.FromDomain(record);
+        var transaction = await _repository.GetByIdAsync(id);
+        var result = TransactionViewModel.FromDomain(transaction);
 
         return Ok(result);
     }
@@ -37,8 +37,8 @@ public class TransactionsController : Controller
     [HttpPost(Name = "CreateTransaction")]
     public async Task<IActionResult> CreateAsync([FromBody] TransactionCreateRequest request)
     {
-        var record = TransactionCreateRequest.ToDomain(request);
-        var createdRecord = await _repository.CreateAsync(record);
+        var transaction = TransactionCreateRequest.ToDomain(request);
+        var createdRecord = await _repository.CreateAsync(transaction);
         var result = TransactionViewModel.FromDomain(createdRecord);
 
         return CreatedAtRoute("GetTransactionById", new { result.Id }, result);
@@ -47,9 +47,9 @@ public class TransactionsController : Controller
     [HttpPut("{id:guid}", Name = "UpdateTransaction")]
     public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] TransactionUpdateRequest request)
     {
-        var record = TransactionUpdateRequest.ToDomain(request);
-        var updatedRecord = await _repository.UpdateAsync(id, record);
-        var result = TransactionViewModel.FromDomain(updatedRecord);
+        var transaction = TransactionUpdateRequest.ToDomain(request);
+        var updatedTransaction = await _repository.UpdateAsync(id, transaction);
+        var result = TransactionViewModel.FromDomain(updatedTransaction);
 
         return Ok(result);
     }

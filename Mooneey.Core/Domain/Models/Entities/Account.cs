@@ -10,5 +10,11 @@ namespace Mooneey.Core.Domain.Models.Entities
         public decimal Balance { get; set; }
 
         public ICollection<Transaction>? Transactions { get; set; }
+
+        public void UpdateBalance(decimal delta)
+        {
+            Balance += delta;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }
