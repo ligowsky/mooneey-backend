@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Mooneey.Core.Application.Contexts;
+using Mooneey.Application;
 
 namespace Mooneey.Infrastructure.Persistence.Contexts;
 

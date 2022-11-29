@@ -6,8 +6,6 @@ public static class AddPresentationExtension
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
-        services.AddValidation();
-
         return services;
     }
 }

@@ -1,30 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Mooneey.Core.Domain.Models.Entities;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Mooneey.Domain;
 
 namespace Mooneey.Infrastructure.Persistence.Configurations;
 
-public class AccountConfiguration : IEntityTypeConfiguration<Account>
+public class AccountConfiguration : EntityBaseAuditableConfiguration<Account>
 {
-    public void Configure(EntityTypeBuilder<Account> builder)
+    public override void Configure(EntityTypeBuilder<Account> builder)
     {
-        builder.HasKey(r => r.Id);
+        base.Configure(builder);
 
-        builder.Property(r => r.AccountType).IsRequired();
+        builder.Property(x => x.AccountType).IsRequired();
 
-        builder.Property(r => r.Name)
+        builder.Property(x => x.CurrencyCode).IsRequired();
+
+        builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(64);
 
-        builder.Property(r => r.Balance).IsRequired();
-
-        builder.HasMany(r => r.Transactions)
-            .WithOne(r => r.Account)
-            .HasForeignKey(r => r.AccountId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.Property(r => r.CreatedAt).IsRequired();
-
-        builder.Property(r => r.UpdatedAt).IsRequired();
+        builder.Property(x => x.Balance).IsRequired();
+        
+        builder.HasMany(x => x.Transactions)
+            .WithMany(x => x.Accounts);
     }
 }

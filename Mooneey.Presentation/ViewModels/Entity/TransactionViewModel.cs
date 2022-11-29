@@ -1,44 +1,48 @@
 ﻿using System.Text.Json.Serialization;
-using Mooneey.Core.Domain.Enums;
-using Mooneey.Core.Domain.Models.Entities;
+using BitzArt;
+using Mooneey.Domain;
 
 namespace Mooneey.Presentation.ViewModels.Entity;
 
 public class TransactionViewModel
 {
-    [JsonPropertyName("id")] 
     public Guid Id { get; set; }
-
-    [JsonPropertyName("type")] 
-    public TransactionTypeEnum TransactionType { get; set; }
-
-    [JsonPropertyName("category")] 
-    public CategoryViewModel? Category { get; set; }
+    public TransactionType TransactionType { get; set; }
     
-    [JsonPropertyName("account")] 
-    public AccountViewModel? Account { get; set; }
-
-    [JsonPropertyName("amount")] 
-    public decimal Amount { get; set; }
-
-    [JsonPropertyName("comment")] 
+    public object Details { get; set; }
     public string? Comment { get; set; }
-
-    [JsonPropertyName("createdAt")] 
     public DateTime CreatedAt { get; set; }
-
-    [JsonPropertyName("updatedAt")] 
     public DateTime UpdatedAt { get; set; }
 
     public static TransactionViewModel FromDomain(Transaction input) => new()
     {
         Id = input.Id,
-        TransactionType = input.TransactionType,
-        Category = input.Category != null ? CategoryViewModel.FromDomain(input.Category) : null,
-        Account = input.Account != null ? AccountViewModel.FromDomain(input.Account) : null,
-        Amount = input.Amount,
+        TransactionType = GetTransactionType(input),
+        Details = GetDetails(input),
         Comment = input.Comment,
         CreatedAt = input.CreatedAt,
         UpdatedAt = input.UpdatedAt
     };
+
+    private static TransactionType GetTransactionType(Transaction input)
+    {
+        return input switch
+        {
+            Income => TransactionType.Income,
+            Expense => TransactionType.Expense,
+            Transfer => TransactionType.Transfer,
+            _ => throw ApiException.Custom("Unknown transaction type")
+        };
+    }
+    
+    private static object GetDetails(Transaction input)
+    {
+        return input switch
+        {
+            Income income => IncomeDetailsViewModel.FromDomain(income),
+            Expense => TransactionType.Expense,
+            Transfer => TransactionType.Transfer,
+            _ => throw ApiException.Custom("Unknown transaction type")
+        };
+    }
 }

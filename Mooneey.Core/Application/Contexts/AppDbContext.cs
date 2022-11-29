@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Mooneey.Core.Application.Contexts;
+namespace Mooneey.Application;
 
 public abstract class AppDbContext : DbContext
 {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mooneey.Core.Application.Interfaces;
+using Mooneey.Application;
 using Mooneey.Presentation.ViewModels.Entity;
-using Mooneey.Presentation.ViewModels.Request;
 
 namespace Mooneey.WebAPI.Controllers;
 
@@ -35,9 +34,9 @@ public class AccountsController : Controller
     }
 
     [HttpPost(Name = "CreateAccount")]
-    public async Task<IActionResult> CreateAsync([FromBody] AccountCreateRequest request)
+    public async Task<IActionResult> CreateAsync([FromBody] AccountViewModel request)
     {
-        var record = AccountCreateRequest.ToDomain(request);
+        var record = request.ToDomain();
         var createdRecord = await _repository.CreateAsync(record);
         var result = AccountViewModel.FromDomain(createdRecord);
 
@@ -45,9 +44,9 @@ public class AccountsController : Controller
     }
 
     [HttpPut("{id:guid}", Name = "UpdateAccount")]
-    public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] AccountUpdateRequest request)
+    public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] AccountViewModel request)
     {
-        var record = AccountUpdateRequest.ToDomain(request);
+        var record = request.ToDomain();
         var updatedRecord = await _repository.UpdateAsync(id, record);
         var result = AccountViewModel.FromDomain(updatedRecord);
 

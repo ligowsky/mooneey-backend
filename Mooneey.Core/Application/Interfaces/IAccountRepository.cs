@@ -1,6 +1,6 @@
-﻿using Mooneey.Core.Domain.Models.Entities;
+﻿using Mooneey.Domain;
 
-namespace Mooneey.Core.Application.Interfaces;
+namespace Mooneey.Application;
 
 public interface IAccountRepository
 {

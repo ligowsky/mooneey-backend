@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mooneey.Core.Application.Contexts;
+using Mooneey.Application;
 using Mooneey.Infrastructure.Persistence.Contexts;
 
 namespace Mooneey.Infrastructure.Persistence.Extensions;

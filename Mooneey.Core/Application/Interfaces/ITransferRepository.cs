@@ -1,12 +1,8 @@
-﻿using Mooneey.Core.Domain.Models.Entities;
+﻿using Mooneey.Domain;
 
-namespace Mooneey.Core.Application.Interfaces;
+namespace Mooneey.Application;
 
 public interface ITransferRepository
 {
-    Task<List<Transfer>> GetAllAsync();
-    Task<Transfer> GetByIdAsync(Guid id);
     Task<Transfer> CreateAsync(Transfer transfer);
-    Task<Transfer> UpdateAsync(Guid id, Transfer transfer);
-    Task DeleteAsync(Guid id);
 }

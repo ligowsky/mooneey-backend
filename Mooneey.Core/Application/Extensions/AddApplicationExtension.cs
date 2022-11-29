@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Mooneey.Core.Application.Extensions;
+namespace Mooneey;
 
 public static class AddApplicationExtension
 {

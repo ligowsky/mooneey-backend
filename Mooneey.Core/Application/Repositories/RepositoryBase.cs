@@ -1,14 +1,11 @@
-﻿using Mooneey.Core.Application.Contexts;
+﻿namespace Mooneey.Application.Repositories;
 
-namespace Mooneey.Core.Application.Repositories
+public class RepositoryBase
 {
-    public class RepositoryBase
-    {
-        public readonly AppDbContext _db;
+    public readonly AppDbContext _db;
 
-        protected RepositoryBase(AppDbContext db)
-        {
-            _db = db;
-        }
+    protected RepositoryBase(AppDbContext db)
+    {
+        _db = db;
     }
 }

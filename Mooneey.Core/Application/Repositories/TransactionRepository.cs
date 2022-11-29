@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Mooneey.Core.Application.Contexts;
-using Mooneey.Core.Application.Interfaces;
-using Mooneey.Core.Domain.Models.Entities;
+﻿using BitzArt;
+using Microsoft.EntityFrameworkCore;
+using Mooneey.Domain;
 
-namespace Mooneey.Core.Application.Repositories;
+namespace Mooneey.Application.Repositories;
 
 public class TransactionRepository : RepositoryBase, ITransactionRepository
 {
@@ -11,140 +10,53 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     {
     }
 
-    public async Task<List<Transaction>> GetAllAsync()
+    public async Task<IEnumerable<Transaction>> GetAllAsync(Guid accountId)
     {
-        var transactions = await _db.Set<Transaction>()
-            .Include(t => t.Account)
-            .Include(t => t.Category)
+        var isAccountExists = await _db.Set<Account>()
+            .Where(a => a.Id == accountId)
+            .AnyAsync();
+
+        if (!isAccountExists)
+        {
+            throw ApiException.NotFound($"Account with id = '{accountId}' was not found.");
+        }
+
+        var transactions = await _db.Set<Account>()
+            .Where(x => x.Id == accountId)
+            .SelectMany(x => x.Transactions!)
             .ToListAsync();
 
         return transactions;
     }
 
-    public async Task<Transaction> GetByIdAsync(Guid id)
+    public async Task<Transaction> GetAsync(Guid transactionId)
     {
         var transaction = await _db.Set<Transaction>()
-            .Where(t => t.Id == id)
-            .Include(t => t.Account)
-            .Include(t => t.Category)
+            .Where(t => t.Id == transactionId)
+            .IncludeAll()
             .FirstOrDefaultAsync();
 
         if (transaction is null)
         {
-            throw new Exception($"Transaction with id = '{id}' was not found.");
+            throw new Exception($"Transaction with id = '{transactionId}' was not found.");
         }
 
         return transaction;
     }
 
-    public async Task<Transaction> CreateAsync(Transaction transaction)
-    {
-        var account = await _db.Set<Account>()
-            .Where(a => a.Id == transaction.AccountId)
-            .FirstOrDefaultAsync();
-
-        if (account is null)
-        {
-            throw new Exception($"Account with id = '{transaction.AccountId}' was not found.");
-        }
-
-        if (transaction.CategoryId != null)
-        {
-            var category = await _db.Set<Category>()
-                .Where(c => c.Id == transaction.CategoryId)
-                .FirstOrDefaultAsync();
-
-            if (category is null)
-            {
-                throw new Exception($"Category with id = '{transaction.AccountId}' was not found.");
-            }
-        }
-
-        transaction.CreatedAt = DateTime.UtcNow;
-        transaction.UpdatedAt = DateTime.UtcNow;
-
-        await _db.Set<Transaction>().AddAsync(transaction);
-
-        var delta = transaction.GetAmount();
-        account.UpdateBalance(delta);
-
-        await _db.SaveChangesAsync();
-
-        return transaction;
-    }
-
-    public async Task<Transaction> UpdateAsync(Guid id, Transaction transaction)
-    {
-        var account = await _db.Set<Account>()
-            .Where(a => a.Id == transaction.AccountId)
-            .FirstOrDefaultAsync();
-
-        if (account is null)
-        {
-            throw new Exception($"Account with id = '{transaction.AccountId}' was not found.");
-        }
-
-        if (transaction.CategoryId != null)
-        {
-            var category = await _db.Set<Category>()
-                .Where(c => c.Id == transaction.CategoryId)
-                .FirstOrDefaultAsync();
-
-            if (category is null)
-            {
-                throw new Exception($"Category with id = '{transaction.AccountId}' was not found.");
-            }
-        }
-
-        var existingTransaction = await _db.Set<Transaction>()
-            .Where(t => t.Id == id)
-            .FirstOrDefaultAsync();
-
-        if (existingTransaction is null)
-        {
-            throw new Exception($"Transaction with id = '{id}' was not found.");
-        }
-
-        var delta = transaction.GetAmount() - existingTransaction.GetAmount();
-
-        existingTransaction.TransactionType = transaction.TransactionType;
-        existingTransaction.CategoryId = transaction.CategoryId;
-        existingTransaction.Amount = transaction.Amount;
-        existingTransaction.Comment = transaction.Comment;
-        existingTransaction.UpdatedAt = DateTime.UtcNow;
-
-        account.UpdateBalance(delta);
-
-        await _db.SaveChangesAsync();
-
-        return existingTransaction;
-    }
-
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid transactionId)
     {
         var transaction = await _db.Set<Transaction>()
-            .Where(t => t.Id == id)
+            .Where(t => t.Id == transactionId)
+            .IncludeAll()
             .FirstOrDefaultAsync();
 
         if (transaction is null)
         {
-            throw new Exception($"Transaction with id = '{id}' was not found.");
+            throw new Exception($"Transaction with id = '{transactionId}' was not found.");
         }
 
-        var account = await _db.Set<Account>()
-            .Where(a => a.Id == transaction.AccountId)
-            .FirstOrDefaultAsync();
-
-        if (account is null)
-        {
-            throw new Exception($"Account with id = '{transaction.AccountId}' was not found.");
-        }
-
-        var delta = -transaction.GetAmount();
-
-        _db.Set<Transaction>().Remove(transaction);
-
-        account.UpdateBalance(delta);
+        transaction.Revert();
 
         await _db.SaveChangesAsync();
     }

@@ -1,25 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Mooneey.Core.Domain.Models.Entities;
+using Mooneey.Domain;
 
 namespace Mooneey.Infrastructure.Persistence.Configurations;
 
-public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
+public class TransactionConfiguration : EntityBaseAuditableConfiguration<Transaction>
 {
-    public void Configure(EntityTypeBuilder<Transaction> builder)
+    public override void Configure(EntityTypeBuilder<Transaction> builder)
     {
-        builder.HasKey(r => r.Id);
+        base.Configure(builder);
 
-        builder.Property(r => r.TransactionType)
+        builder.ToTable("Transactions");
+        
+        builder.Property(r => r.Timestamp)
             .IsRequired();
-
-        builder.Property(r => r.Amount).IsRequired();
 
         builder.Property(r => r.Comment)
             .HasMaxLength(256);
-
-        builder.Property(r => r.CreatedAt).IsRequired();
-
-        builder.Property(r => r.UpdatedAt).IsRequired();
     }
 }

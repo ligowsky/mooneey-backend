@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Mooneey.Core.Application.Contexts;
-using Mooneey.Core.Application.Interfaces;
-using Mooneey.Core.Domain.Models.Entities;
+using Mooneey.Domain;
 
-namespace Mooneey.Core.Application.Repositories;
+namespace Mooneey.Application.Repositories;
 
 public class AccountRepository : RepositoryBase, IAccountRepository
 {
@@ -56,7 +54,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
 
         record.AccountType = request.AccountType;
         record.Name = request.Name;
-        record.Currency = request.Currency;
+        record.CurrencyCode = request.CurrencyCode;
         record.Balance = request.Balance;
         record.UpdatedAt = DateTime.UtcNow;
 

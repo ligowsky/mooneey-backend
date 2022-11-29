@@ -1,7 +1,9 @@
-﻿using Mooneey.Core.Application.Extensions;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using Mooneey.Infrastructure.Extensions;
 using Mooneey.Presentation.Extensions;
 using BitzArt.ApiExceptions.AspNetCore;
+using Mooneey;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +13,11 @@ builder.Services.AddPresentation();
 
 builder.Services.AddApiExceptionHandler();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

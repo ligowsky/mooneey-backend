@@ -17,12 +17,10 @@
     <None Remove="Extensions\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Migrations" />
     <Folder Include="Persistence\" />
     <Folder Include="Persistence\Configurations\" />
     <Folder Include="Persistence\Contexts\" />
     <Folder Include="Persistence\Extensions\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>

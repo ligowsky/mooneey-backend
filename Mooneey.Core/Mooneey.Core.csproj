@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>Mooneey</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,10 +21,8 @@
   <ItemGroup>
     <Folder Include="Domain\" />
     <Folder Include="Application\" />
-    <Folder Include="Domain\Enums\" />
     <Folder Include="Application\Interfaces\" />
     <Folder Include="Application\Contexts\" />
-    <Folder Include="Domain\Models\" />
     <Folder Include="Application\Repositories\" />
     <Folder Include="Application\Extensions\" />
   </ItemGroup>
