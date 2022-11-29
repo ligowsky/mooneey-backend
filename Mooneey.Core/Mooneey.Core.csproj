@@ -28,6 +28,7 @@
     <Folder Include="Application\Extensions\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="BitzArt.ApiExceptions.AspNetCore" Version="1.10.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
   </ItemGroup>
 </Project>

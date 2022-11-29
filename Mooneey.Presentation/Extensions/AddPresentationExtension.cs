@@ -4,7 +4,10 @@ namespace Mooneey.Presentation.Extensions;
 
 public static class AddPresentationExtension
 {
-    public static void AddPresentation(this IServiceCollection services)
+    public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
+        services.AddValidation();
+
+        return services;
     }
 }
