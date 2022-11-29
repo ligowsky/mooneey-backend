@@ -9,7 +9,7 @@ namespace Mooneey.Core.Domain.Models.Entities
         public string? Name { get; set; }
         public decimal Balance { get; set; }
 
-        public virtual ICollection<Transaction>? Transactions { get; set; }
+        public ICollection<Transaction>? Transactions { get; set; }
 
         public void UpdateBalance(decimal delta)
         {
