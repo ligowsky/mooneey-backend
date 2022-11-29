@@ -51,7 +51,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         if (transaction.CategoryId != null)
         {
             var category = await _db.Set<Category>()
-                .Where(a => a.Id == transaction.CategoryId)
+                .Where(c => c.Id == transaction.CategoryId)
                 .FirstOrDefaultAsync();
 
             if (category is null)
@@ -65,7 +65,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
 
         await _db.Set<Transaction>().AddAsync(transaction);
 
-        var delta = transaction.GetAmountDelta();
+        var delta = transaction.GetAmount();
         account.UpdateBalance(delta);
 
         await _db.SaveChangesAsync();
@@ -87,7 +87,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         if (transaction.CategoryId != null)
         {
             var category = await _db.Set<Category>()
-                .Where(a => a.Id == transaction.CategoryId)
+                .Where(c => c.Id == transaction.CategoryId)
                 .FirstOrDefaultAsync();
 
             if (category is null)
@@ -105,7 +105,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
             throw new Exception($"Transaction with id = '{id}' was not found.");
         }
 
-        var delta = transaction.GetAmountDelta() - existingTransaction.GetAmountDelta();
+        var delta = transaction.GetAmount() - existingTransaction.GetAmount();
 
         existingTransaction.TransactionType = transaction.TransactionType;
         existingTransaction.CategoryId = transaction.CategoryId;
@@ -132,7 +132,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         }
 
         var account = await _db.Set<Account>()
-            .Where(t => t.Id == transaction.AccountId)
+            .Where(a => a.Id == transaction.AccountId)
             .FirstOrDefaultAsync();
 
         if (account is null)
@@ -140,7 +140,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
             throw new Exception($"Account with id = '{transaction.AccountId}' was not found.");
         }
 
-        var delta = -transaction.GetAmountDelta();
+        var delta = -transaction.GetAmount();
 
         _db.Set<Transaction>().Remove(transaction);
 

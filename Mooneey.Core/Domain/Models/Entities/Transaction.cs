@@ -14,7 +14,7 @@ public class Transaction : EntityBase
     public Guid? CategoryId { get; set; }
     public Category? Category { get; set; }
 
-    public decimal GetAmountDelta()
+    public decimal GetAmount()
     {
         return TransactionType == TransactionTypeEnum.Income ? Amount : -Amount;
     }
