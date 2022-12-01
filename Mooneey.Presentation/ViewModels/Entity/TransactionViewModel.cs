@@ -36,7 +36,7 @@ public class TransactionViewModel : EntityBaseAuditableViewModel
         {
             Income income => IncomeDetailsViewModel.FromDomain(income),
             Expense expense => ExpenseDetailsViewModel.FromDomain(expense),
-            Transfer transfer => TransactionViewModel.FromDomain(transfer),
+            Transfer transfer => TransferDetailsViewModel.FromDomain(transfer),
             _ => throw ApiException.Custom("Unknown transaction type")
         };
     }
