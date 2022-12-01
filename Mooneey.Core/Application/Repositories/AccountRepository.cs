@@ -30,7 +30,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
 
     public async Task<Account> CreateAsync(AccountCreateRequest request)
     {
-        var account = request.ToEntity();
+        var account = new Account(request.AccountType, request.CurrencyCode, request.Name, request.Balance);
 
         await _db.Set<Account>().AddAsync(account);
 
