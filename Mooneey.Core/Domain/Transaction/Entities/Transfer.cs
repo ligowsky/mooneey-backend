@@ -2,9 +2,12 @@ namespace Mooneey.Domain;
 
 public class Transfer : Transaction
 {
-    private Transfer() {}
-    
-    public Transfer(Account sourceAccount, Account targetAccount, decimal sourceAmount, decimal targetAmount)
+    private Transfer()
+    {
+    }
+
+    public Transfer(Account sourceAccount, Account targetAccount, decimal sourceAmount, decimal targetAmount,
+        DateTime timestamp, string? comment)
     {
         SourceAccountId = sourceAccount.Id;
         SourceAccount = sourceAccount;
@@ -14,7 +17,10 @@ public class Transfer : Transaction
 
         SourceAmount = sourceAmount;
         TargetAmount = targetAmount;
-        
+
+        Timestamp = timestamp;
+        Comment = comment;
+
         Accounts = new List<Account> { sourceAccount, targetAccount };
     }
 
@@ -30,7 +36,7 @@ public class Transfer : Transaction
         if (SourceAccount is not null) SourceAccount.Balance -= SourceAmount;
         if (TargetAccount is not null) TargetAccount.Balance += TargetAmount;
     }
-    
+
     public override void Revert()
     {
         if (SourceAccount is not null) SourceAccount.Balance += SourceAmount;

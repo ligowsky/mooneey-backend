@@ -3,7 +3,7 @@
     public class Account : EntityBaseAuditable
     {
         private Account() {}
-        public Account(AccountType accountType, CurrencyCode currencyCode, string name, decimal balance)
+        public Account(AccountType accountType, CurrencyCode currencyCode, string? name, decimal balance)
         {
             AccountType = accountType;
             CurrencyCode = currencyCode;

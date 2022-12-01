@@ -114,7 +114,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         if (existingIncome is null) throw ApiException.BadRequest($"Income with id = '{incomeId}' was not found.");
 
         existingIncome.Revert();
-        
+
         await _db.SaveChangesAsync();
 
         _db.Remove(existingIncome);
@@ -174,10 +174,85 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         if (existingExpense is null) throw ApiException.BadRequest($"Expense with id = '{expenseId}' was not found.");
 
         existingExpense.Revert();
-        
+
         await _db.SaveChangesAsync();
 
         _db.Remove(existingExpense);
+
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task<Transfer> CreateTransferAsync(TransferCreateRequest request)
+    {
+        var sourceAccount = await _db.Set<Account>()
+            .Where(a => a.Id == request.SourceAccountId)
+            .FirstOrDefaultAsync();
+
+        if (sourceAccount is null)
+            throw ApiException.BadRequest($"Account with id = '{request.SourceAccountId}' was not found.");
+
+        var targetAccount = await _db.Set<Account>()
+            .Where(a => a.Id == request.TargetAccountId)
+            .FirstOrDefaultAsync();
+
+        if (targetAccount is null)
+            throw ApiException.BadRequest($"Account with id = '{request.TargetAccountId}' was not found.");
+
+
+        var transfer = new Transfer(sourceAccount, targetAccount, request.SourceAmount, request.TargetAmount,
+            request.Timestamp, request.Comment);
+
+        await _db.AddAsync(transfer);
+
+        transfer.Apply();
+
+        await _db.SaveChangesAsync();
+
+        return transfer;
+    }
+
+    public async Task<Transfer> UpdateTransferAsync(Guid transferId, TransferUpdateRequest request)
+    {
+        var existingTransfer = await _db.Set<Transfer>()
+            .Where(a => a.Id == transferId)
+            .Include(x => x.SourceAccount)
+            .Include(x => x.TargetAccount)
+            .FirstOrDefaultAsync();
+
+        if (existingTransfer is null)
+            throw ApiException.BadRequest($"Transfer with id = '{transferId}' was not found.");
+
+        existingTransfer.Revert();
+
+        existingTransfer.SourceAmount = request.SourceAmount ?? existingTransfer.SourceAmount;
+        existingTransfer.TargetAmount = request.TargetAmount ?? existingTransfer.TargetAmount;
+        existingTransfer.Timestamp = request.Timestamp ?? existingTransfer.Timestamp;
+        existingTransfer.Comment = request.Comment ?? existingTransfer.Comment;
+        existingTransfer.UpdatedAt = DateTime.UtcNow;
+
+        existingTransfer.Apply();
+
+        await _db.SaveChangesAsync();
+
+        return existingTransfer;
+    }
+
+    public async Task DeleteTransferAsync(Guid transferId)
+    {
+        var existingTransfer = await _db.Set<Transfer>()
+            .Where(x => x.Id == transferId)
+            .Include(x => x.SourceAccount)
+            .Include(x => x.TargetAccount)
+            .FirstOrDefaultAsync();
+
+        if (existingTransfer is null)
+            throw ApiException.BadRequest($"Transfer with id = '{transferId}' was not found.");
+
+        existingTransfer.Revert();
+
+        await _db.SaveChangesAsync();
+
+        _db.Remove(existingTransfer);
 
         await _db.SaveChangesAsync();
     }
