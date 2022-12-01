@@ -13,7 +13,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task<IEnumerable<Transaction>> GetTransactionsAsync(Guid accountId)
     {
         var isAccountExists = await _db.Set<Account>()
-            .Where(a => a.Id == accountId)
+            .Where(x => x.Id == accountId)
             .AnyAsync();
 
         if (!isAccountExists) throw ApiException.NotFound($"Account with id = '{accountId}' was not found.");
@@ -30,7 +30,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task<Transaction> GetTransactionAsync(Guid transactionId)
     {
         var transaction = await _db.Set<Transaction>()
-            .Where(t => t.Id == transactionId)
+            .Where(x => x.Id == transactionId)
             .IncludeAccounts()
             .FirstOrDefaultAsync();
 
@@ -43,7 +43,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task DeleteTransactionAsync(Guid transactionId)
     {
         var existingTransaction = await _db.Set<Transaction>()
-            .Where(t => t.Id == transactionId)
+            .Where(x => x.Id == transactionId)
             .IncludeAccounts()
             .FirstOrDefaultAsync();
 
@@ -60,7 +60,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task<Income> CreateIncomeAsync(IncomeCreateRequest request)
     {
         var account = await _db.Set<Account>()
-            .Where(a => a.Id == request.AccountId)
+            .Where(x => x.Id == request.AccountId)
             .FirstOrDefaultAsync();
 
         if (account is null) throw ApiException.BadRequest($"Account with id = '{request.AccountId}' was not found.");
@@ -79,7 +79,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task<Income> UpdateIncomeAsync(Guid incomeId, IncomeUpdateRequest request)
     {
         var existingIncome = await _db.Set<Income>()
-            .Where(a => a.Id == incomeId)
+            .Where(x => x.Id == incomeId)
             .Include(x => x.Account)
             .FirstOrDefaultAsync();
 
@@ -95,7 +95,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task<Expense> CreateExpenseAsync(ExpenseCreateRequest request)
     {
         var account = await _db.Set<Account>()
-            .Where(a => a.Id == request.AccountId)
+            .Where(x => x.Id == request.AccountId)
             .FirstOrDefaultAsync();
 
         if (account is null) throw ApiException.BadRequest($"Account with id = '{request.AccountId}' was not found.");
@@ -114,7 +114,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task<Expense> UpdateExpenseAsync(Guid expenseId, ExpenseUpdateRequest request)
     {
         var existingExpense = await _db.Set<Expense>()
-            .Where(a => a.Id == expenseId)
+            .Where(x => x.Id == expenseId)
             .Include(x => x.Account)
             .FirstOrDefaultAsync();
 
@@ -130,14 +130,14 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task<Transfer> CreateTransferAsync(TransferCreateRequest request)
     {
         var sourceAccount = await _db.Set<Account>()
-            .Where(a => a.Id == request.SourceAccountId)
+            .Where(x => x.Id == request.SourceAccountId)
             .FirstOrDefaultAsync();
 
         if (sourceAccount is null)
             throw ApiException.BadRequest($"Account with id = '{request.SourceAccountId}' was not found.");
 
         var targetAccount = await _db.Set<Account>()
-            .Where(a => a.Id == request.TargetAccountId)
+            .Where(x => x.Id == request.TargetAccountId)
             .FirstOrDefaultAsync();
 
         if (targetAccount is null)
@@ -159,7 +159,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     public async Task<Transfer> UpdateTransferAsync(Guid transferId, TransferUpdateRequest request)
     {
         var existingTransfer = await _db.Set<Transfer>()
-            .Where(a => a.Id == transferId)
+            .Where(x => x.Id == transferId)
             .Include(x => x.SourceAccount)
             .Include(x => x.TargetAccount)
             .FirstOrDefaultAsync();
