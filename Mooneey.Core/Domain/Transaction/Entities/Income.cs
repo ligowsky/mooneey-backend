@@ -23,22 +23,23 @@ public class Income : Transaction
 
     public override void Apply()
     {
-        if (Account is not null) Account.Balance += Amount;
+        Account?.UpdateBalance(Amount);
     }
 
     public override void Revert()
     {
-        if (Account is not null) Account.Balance -= Amount;
+        Account?.UpdateBalance(-Amount);
     }
 
     public void Update(IncomeUpdateRequest request)
     {
-        if (Account is not null && request.Amount.HasValue) 
-            Account.Balance += (request.Amount.Value - Amount);
+        Revert();
 
         Amount = request.Amount ?? Amount;
         Timestamp = request.Timestamp ?? Timestamp;
         Comment = request.Comment ?? Comment;
         UpdatedAt = DateTime.UtcNow;
+        
+        Apply();
     }
 }
