@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BitzArt;
+using Microsoft.EntityFrameworkCore;
 using Mooneey.Domain;
 
 namespace Mooneey.Application.Repositories;
@@ -22,7 +23,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
 
-        if (account is null) throw new Exception($"Account with id = '{id}' was not found.");
+        if (account is null) throw ApiException.NotFound($"Account with id = '{id}' was not found.");
 
         return account;
     }
@@ -44,7 +45,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
 
-        if (existingAccount is null) throw new Exception($"Account with id = '{id}' was not found.");
+        if (existingAccount is null) throw ApiException.BadRequest($"Account with id = '{id}' was not found.");
 
         existingAccount.AccountType = request.AccountType ?? existingAccount.AccountType;
         existingAccount.CurrencyCode = request.CurrencyCode ?? existingAccount.CurrencyCode;
@@ -62,7 +63,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
 
-        if (existingAccount is null) throw new Exception($"Account with id = '{id}' was not found.");
+        if (existingAccount is null) throw ApiException.BadRequest($"Account with id = '{id}' was not found.");
 
         _db.Set<Account>().Remove(existingAccount);
 

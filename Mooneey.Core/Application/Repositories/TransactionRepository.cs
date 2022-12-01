@@ -16,10 +16,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
             .Where(a => a.Id == accountId)
             .AnyAsync();
 
-        if (!isAccountExists)
-        {
-            throw ApiException.NotFound($"Account with id = '{accountId}' was not found.");
-        }
+        if (!isAccountExists) throw ApiException.NotFound($"Account with id = '{accountId}' was not found.");
 
         var transactions = await _db.Set<Account>()
             .Where(x => x.Id == accountId)
@@ -38,24 +35,20 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
             .FirstOrDefaultAsync();
 
         if (transaction is null)
-        {
-            throw new Exception($"Transaction with id = '{transactionId}' was not found.");
-        }
+            throw ApiException.NotFound($"Transaction with id = '{transactionId}' was not found.");
 
         return transaction;
     }
 
-    public async Task DeleteTransactionAsync(Guid id)
+    public async Task DeleteTransactionAsync(Guid transactionId)
     {
         var existingTransaction = await _db.Set<Transaction>()
-            .Where(t => t.Id == id)
+            .Where(t => t.Id == transactionId)
             .IncludeAccounts()
             .FirstOrDefaultAsync();
 
         if (existingTransaction is null)
-        {
-            throw new Exception($"Transaction with id = '{id}' was not found.");
-        }
+            throw ApiException.NotFound($"Transaction with id = '{transactionId}' was not found.");
 
         existingTransaction.Revert();
 
@@ -90,7 +83,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
             .Include(x => x.Account)
             .FirstOrDefaultAsync();
 
-        if (existingIncome is null) throw ApiException.BadRequest($"Income with id = '{incomeId}' was not found.");
+        if (existingIncome is null) throw ApiException.NotFound($"Income with id = '{incomeId}' was not found.");
 
         existingIncome.Revert();
 
@@ -132,7 +125,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
             .Include(x => x.Account)
             .FirstOrDefaultAsync();
 
-        if (existingExpense is null) throw ApiException.BadRequest($"Expense with id = '{expenseId}' was not found.");
+        if (existingExpense is null) throw ApiException.NotFound($"Expense with id = '{expenseId}' was not found.");
 
         existingExpense.Revert();
 
@@ -186,7 +179,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
             .FirstOrDefaultAsync();
 
         if (existingTransfer is null)
-            throw ApiException.BadRequest($"Transfer with id = '{transferId}' was not found.");
+            throw ApiException.NotFound($"Transfer with id = '{transferId}' was not found.");
 
         existingTransfer.Revert();
 
