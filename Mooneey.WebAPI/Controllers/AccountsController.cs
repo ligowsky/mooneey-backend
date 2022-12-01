@@ -66,7 +66,7 @@ public class AccountsController : Controller
     [HttpGet("{id:guid}/transactions", Name = "GetTransactions")]
     public async Task<IActionResult> GetTransactions([FromRoute] Guid id)
     {
-        var transactions = await _transactionRepository.GetAllAsync(id);
+        var transactions = await _transactionRepository.GetTransactionsAsync(id);
         var result = transactions.Select(TransactionViewModel.FromDomain);
 
         return Ok(result);

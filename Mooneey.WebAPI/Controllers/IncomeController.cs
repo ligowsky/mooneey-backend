@@ -35,12 +35,4 @@ public class IncomeController : Controller
 
         return Ok(result);
     }
-    
-    [HttpDelete("{id:guid}", Name = "DeleteIncome")]
-    public async Task<IActionResult> DeleteIncomeAsync([FromRoute] Guid id)
-    {
-        await _repository.DeleteIncomeAsync(id);
-        
-        return Ok();
-    }
 }

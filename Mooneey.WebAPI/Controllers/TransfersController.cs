@@ -35,12 +35,4 @@ public class TransfersController : Controller
 
         return Ok(result);
     }
-
-    [HttpDelete("{id:guid}", Name = "DeleteTransfer")]
-    public async Task<IActionResult> DeleteTransferAsync([FromRoute] Guid id)
-    {
-        await _repository.DeleteTransferAsync(id);
-
-        return Ok();
-    }
 }

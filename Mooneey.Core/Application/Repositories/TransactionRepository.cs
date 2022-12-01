@@ -10,7 +10,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
     {
     }
 
-    public async Task<IEnumerable<Transaction>> GetAllAsync(Guid accountId)
+    public async Task<IEnumerable<Transaction>> GetTransactionsAsync(Guid accountId)
     {
         var isAccountExists = await _db.Set<Account>()
             .Where(a => a.Id == accountId)
@@ -30,7 +30,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         return transactions;
     }
 
-    public async Task<Transaction> GetAsync(Guid transactionId)
+    public async Task<Transaction> GetTransactionAsync(Guid transactionId)
     {
         var transaction = await _db.Set<Transaction>()
             .Where(t => t.Id == transactionId)
@@ -45,19 +45,21 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         return transaction;
     }
 
-    public async Task DeleteAsync(Guid transactionId)
+    public async Task DeleteTransactionAsync(Guid id)
     {
-        var transaction = await _db.Set<Transaction>()
-            .Where(t => t.Id == transactionId)
+        var existingTransaction = await _db.Set<Transaction>()
+            .Where(t => t.Id == id)
             .IncludeAccounts()
             .FirstOrDefaultAsync();
 
-        if (transaction is null)
+        if (existingTransaction is null)
         {
-            throw new Exception($"Transaction with id = '{transactionId}' was not found.");
+            throw new Exception($"Transaction with id = '{id}' was not found.");
         }
 
-        transaction.Revert();
+        existingTransaction.Revert();
+
+        _db.Remove(existingTransaction);
 
         await _db.SaveChangesAsync();
     }
@@ -104,24 +106,6 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         return existingIncome;
     }
 
-    public async Task DeleteIncomeAsync(Guid incomeId)
-    {
-        var existingIncome = await _db.Set<Income>()
-            .Where(x => x.Id == incomeId)
-            .Include(x => x.Account)
-            .FirstOrDefaultAsync();
-
-        if (existingIncome is null) throw ApiException.BadRequest($"Income with id = '{incomeId}' was not found.");
-
-        existingIncome.Revert();
-
-        await _db.SaveChangesAsync();
-
-        _db.Remove(existingIncome);
-
-        await _db.SaveChangesAsync();
-    }
-
     public async Task<Expense> CreateExpenseAsync(ExpenseCreateRequest request)
     {
         var account = await _db.Set<Account>()
@@ -162,24 +146,6 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         await _db.SaveChangesAsync();
 
         return existingExpense;
-    }
-
-    public async Task DeleteExpenseAsync(Guid expenseId)
-    {
-        var existingExpense = await _db.Set<Expense>()
-            .Where(x => x.Id == expenseId)
-            .Include(x => x.Account)
-            .FirstOrDefaultAsync();
-
-        if (existingExpense is null) throw ApiException.BadRequest($"Expense with id = '{expenseId}' was not found.");
-
-        existingExpense.Revert();
-
-        await _db.SaveChangesAsync();
-
-        _db.Remove(existingExpense);
-
-        await _db.SaveChangesAsync();
     }
 
     public async Task<Transfer> CreateTransferAsync(TransferCreateRequest request)
@@ -235,25 +201,5 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         await _db.SaveChangesAsync();
 
         return existingTransfer;
-    }
-
-    public async Task DeleteTransferAsync(Guid transferId)
-    {
-        var existingTransfer = await _db.Set<Transfer>()
-            .Where(x => x.Id == transferId)
-            .Include(x => x.SourceAccount)
-            .Include(x => x.TargetAccount)
-            .FirstOrDefaultAsync();
-
-        if (existingTransfer is null)
-            throw ApiException.BadRequest($"Transfer with id = '{transferId}' was not found.");
-
-        existingTransfer.Revert();
-
-        await _db.SaveChangesAsync();
-
-        _db.Remove(existingTransfer);
-
-        await _db.SaveChangesAsync();
     }
 }
