@@ -1,13 +1,12 @@
-﻿namespace Mooneey.Domain
+﻿namespace Mooneey.Domain;
+
+public abstract class EntityBaseAuditable : EntityBase
 {
-    public abstract class EntityBaseAuditable : EntityBase
+    protected EntityBaseAuditable()
     {
-        protected EntityBaseAuditable()
-        {
-            UpdatedAt = DateTime.UtcNow;
-            CreatedAt = DateTime.UtcNow;
-        }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        UpdatedAt = DateTime.UtcNow;
+        CreatedAt = DateTime.UtcNow;
     }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }

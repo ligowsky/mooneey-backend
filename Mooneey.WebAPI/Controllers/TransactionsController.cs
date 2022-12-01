@@ -5,7 +5,7 @@ using Mooneey.Presentation;
 namespace Mooneey.WebAPI.Controllers;
 
 [ApiController]
-[Route("api/v1/transactions")]
+[Route("api/v1/transactions/{id:guid}")]
 public class TransactionsController : Controller
 {
     private readonly ITransactionRepository _repository;
@@ -15,7 +15,7 @@ public class TransactionsController : Controller
         _repository = repository;
     }
 
-    [HttpGet("{id:guid}", Name = "GetTransaction")]
+    [HttpGet(Name = "GetTransaction")]
     public async Task<IActionResult> GetTransactionAsync(Guid id)
     {
         var transaction = await _repository.GetTransactionAsync(id);
@@ -24,7 +24,7 @@ public class TransactionsController : Controller
         return Ok(result);
     }
     
-    [HttpDelete("{id:guid}", Name = "DeleteTransaction")]
+    [HttpDelete(Name = "DeleteTransaction")]
     public async Task<IActionResult> DeleteTransactionAsync([FromRoute] Guid id)
     {
         await _repository.DeleteTransactionAsync(id);

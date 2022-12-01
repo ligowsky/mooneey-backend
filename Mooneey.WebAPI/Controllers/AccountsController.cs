@@ -8,19 +8,19 @@ namespace Mooneey.WebAPI.Controllers;
 [Route("api/v1/accounts")]
 public class AccountsController : Controller
 {
-    private readonly IAccountRepository _accountRrepository;
+    private readonly IAccountRepository _accountRepository;
     private readonly ITransactionRepository _transactionRepository;
 
     public AccountsController(IAccountRepository accountRepository, ITransactionRepository transactionRepository)
     {
-        _accountRrepository = accountRepository;
+        _accountRepository = accountRepository;
         _transactionRepository = transactionRepository;
     }
 
     [HttpGet(Name = "GetAllAccounts")]
     public async Task<IActionResult> GetAllAsync()
     {
-        var accounts = await _accountRrepository.GetAllAsync();
+        var accounts = await _accountRepository.GetAllAsync();
         var result = accounts.Select(AccountViewModel.FromDomain);
 
         return Ok(result);
@@ -29,7 +29,7 @@ public class AccountsController : Controller
     [HttpGet("{id:guid}", Name = "GetAccount")]
     public async Task<IActionResult> GetAsync([FromRoute] Guid id)
     {
-        var account = await _accountRrepository.GetAsync(id);
+        var account = await _accountRepository.GetAsync(id);
         var result = AccountViewModel.FromDomain(account);
 
         return Ok(result);
@@ -39,7 +39,7 @@ public class AccountsController : Controller
     public async Task<IActionResult> CreateAsync([FromBody] AccountCreateRequestViewModel request)
     {
         var account = request.ToDomain();
-        var createdAccount = await _accountRrepository.CreateAsync(account);
+        var createdAccount = await _accountRepository.CreateAsync(account);
         var result = AccountViewModel.FromDomain(createdAccount);
 
         return CreatedAtRoute("GetAccount", new { result.Id }, result);
@@ -49,7 +49,7 @@ public class AccountsController : Controller
     public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] AccountUpdateRequestViewModel request)
     {
         var account = request.ToDomain();
-        var updatedAccount = await _accountRrepository.UpdateAsync(id, account);
+        var updatedAccount = await _accountRepository.UpdateAsync(id, account);
         var result = AccountViewModel.FromDomain(updatedAccount);
 
         return Ok(result);
@@ -58,7 +58,7 @@ public class AccountsController : Controller
     [HttpDelete("{id:guid}", Name = "DeleteAccount")]
     public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
     {
-        await _accountRrepository.DeleteAsync(id);
+        await _accountRepository.DeleteAsync(id);
 
         return Ok();
     }
