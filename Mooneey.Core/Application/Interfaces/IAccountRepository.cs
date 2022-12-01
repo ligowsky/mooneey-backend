@@ -4,9 +4,9 @@ namespace Mooneey.Application;
 
 public interface IAccountRepository
 {
-    Task<List<Account>> GetAllAsync();
-    Task<Account> GetByIdAsync(Guid id);
-    Task<Account> CreateAsync(Account account);
-    Task<Account> UpdateAsync(Guid id, Account account);
+    Task<IEnumerable<Account>> GetAllAsync();
+    Task<Account> GetAsync(Guid id);
+    Task<Account> CreateAsync(AccountCreateRequest request);
+    Task<Account> UpdateAsync(Guid id, AccountUpdateRequest request);
     Task DeleteAsync(Guid id);
 }

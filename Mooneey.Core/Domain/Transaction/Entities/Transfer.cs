@@ -12,15 +12,14 @@ public class Transfer : Transaction
         TargetAccountId = targetAccount.Id;
         TargetAccount = targetAccount;
 
-        Accounts = new List<Account> { sourceAccount, targetAccount };
-
         SourceAmount = sourceAmount;
         TargetAmount = targetAmount;
+        
+        Accounts = new List<Account> { sourceAccount, targetAccount };
     }
 
     public Guid? SourceAccountId { get; set; }
     public Account? SourceAccount { get; set; }
-
     public Guid? TargetAccountId { get; set; }
     public Account? TargetAccount { get; set; }
     public decimal SourceAmount { get; set; }

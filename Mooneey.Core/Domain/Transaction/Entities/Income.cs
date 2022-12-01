@@ -3,11 +3,13 @@ namespace Mooneey.Domain;
 public class Income : Transaction
 {
     private Income() {}
-    public Income(Account account, decimal amount)
+    public Income(Account account, decimal amount, DateTime timestamp, string? comment)
     {
-        Account = account;
         AccountId = account.Id;
+        Account = account;
         Amount = amount;
+        Timestamp = timestamp;
+        Comment = comment;
 
         Accounts = new List<Account> { account };
     }

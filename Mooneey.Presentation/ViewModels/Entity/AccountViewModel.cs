@@ -1,30 +1,13 @@
-﻿using System.Text.Json.Serialization;
-using Mooneey.Domain;
+﻿using Mooneey.Domain;
 
-namespace Mooneey.Presentation.ViewModels.Entity;
+namespace Mooneey.Presentation;
 
-public class AccountViewModel
+public class AccountViewModel : EntityBaseAuditableViewModel
 {
-    [JsonPropertyName("id")] 
-    public Guid? Id { get; set; }
-
-    [JsonPropertyName("accountType")] 
-    public AccountType? AccountType { get; set; }
-
-    [JsonPropertyName("name")] 
+    public AccountType AccountType { get; set; }
     public string? Name { get; set; }
-
-    [JsonPropertyName("currencyCode")] 
-    public CurrencyCode? CurrencyCode { get; set; }
-
-    [JsonPropertyName("balance")] 
-    public decimal? Balance { get; set; }
-
-    [JsonPropertyName("createdAt")] 
-    public DateTime? CreatedAt { get; set; }
-
-    [JsonPropertyName("updatedAt")] 
-    public DateTime? UpdatedAt { get; set; }
+    public CurrencyCode CurrencyCode { get; set; }
+    public decimal Balance { get; set; }
 
     public static AccountViewModel FromDomain(Account account) => new()
     {
@@ -35,13 +18,5 @@ public class AccountViewModel
         Balance = account.Balance,
         CreatedAt = account.CreatedAt,
         UpdatedAt = account.UpdatedAt
-    };
-    
-    public Account ToDomain() => new()
-    {
-        AccountType = AccountType!.Value,
-        CurrencyCode = CurrencyCode!.Value,
-        Name = Name,
-        Balance = Balance!.Value,
     };
 }

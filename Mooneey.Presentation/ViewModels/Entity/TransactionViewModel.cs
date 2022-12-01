@@ -1,18 +1,13 @@
-﻿using System.Text.Json.Serialization;
-using BitzArt;
+﻿using BitzArt;
 using Mooneey.Domain;
 
-namespace Mooneey.Presentation.ViewModels.Entity;
+namespace Mooneey.Presentation;
 
-public class TransactionViewModel
+public class TransactionViewModel : EntityBaseAuditableViewModel
 {
-    public Guid Id { get; set; }
     public TransactionType TransactionType { get; set; }
-    
-    public object Details { get; set; }
+    public object? Details { get; set; }
     public string? Comment { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
 
     public static TransactionViewModel FromDomain(Transaction input) => new()
     {
@@ -40,7 +35,7 @@ public class TransactionViewModel
         return input switch
         {
             Income income => IncomeDetailsViewModel.FromDomain(income),
-            Expense => TransactionType.Expense,
+            Expense expense => ExpenseDetailsViewModel.FromDomain(expense),
             Transfer => TransactionType.Transfer,
             _ => throw ApiException.Custom("Unknown transaction type")
         };

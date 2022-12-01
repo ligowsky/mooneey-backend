@@ -5,7 +5,7 @@ namespace Mooneey;
 
 public static class TransactionQueryExtensions
 {
-    public static IQueryable<Transaction> IncludeAll(this IQueryable<Transaction> query)
+    public static IQueryable<Transaction> IncludeAccounts(this IQueryable<Transaction> query)
     {
         return query
             .Include(x => (x as Income)!.Account)

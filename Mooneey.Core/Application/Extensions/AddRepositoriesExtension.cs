@@ -10,7 +10,5 @@ public static class AddRepositoriesExtension
     {
         services.AddTransient<IAccountRepository, AccountRepository>();
         services.AddTransient<ITransactionRepository, TransactionRepository>();
-        services.AddTransient<IIncomeRepository, IncomeRepository>();
-        services.AddTransient<IExpenseRepository, ExpenseRepository>();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mooneey.Application;
 using Mooneey.Presentation;
-using Mooneey.Presentation.ViewModels.Entity;
 
 namespace Mooneey.WebAPI.Controllers;
 
@@ -9,32 +8,39 @@ namespace Mooneey.WebAPI.Controllers;
 [Route("api/v1/income")]
 public class IncomeController : Controller
 {
-    private readonly IIncomeRepository _repository;
+    private readonly ITransactionRepository _repository;
 
-    public IncomeController(IIncomeRepository repository)
+    public IncomeController(ITransactionRepository repository)
     {
         _repository = repository;
     }
 
-    [HttpPost(Name = "Create")]
-    public async Task<IActionResult> CreateAsync([FromBody] IncomeCreateRequest request)
+    [HttpPost(Name = "CreateIncome")]
+    public async Task<IActionResult> CreateIncomeAsync([FromBody] IncomeCreateRequestViewModel request)
     {
         var income = request.ToDomain();
-        var createdTransaction = await _repository.CreateAsync(income);
-        var result = TransactionViewModel.FromDomain(createdTransaction);
+        var createdIncome = await _repository.CreateIncomeAsync(income);
+        var result = TransactionViewModel.FromDomain(createdIncome);
 
         return Ok(result);
     }
 
-    /*
-    [HttpPut("{id:guid}", Name = "Update")]
-    public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] IncomeCreateRequest request)
+    [HttpPut("{id:guid}", Name = "UpdateIncome")]
+    public async Task<IActionResult> UpdateIncomeAsync([FromRoute] Guid id,
+        [FromBody] IncomeUpdateRequestViewModel request)
     {
         var income = request.ToDomain();
-        var updatedIncome = await _repository.UpdateAsync(id, transaction);
-        var result = TransactionViewModel.FromDomain(updatedTransaction);
+        var updatedIncome = await _repository.UpdateIncomeAsync(id, income);
+        var result = TransactionViewModel.FromDomain(updatedIncome);
 
         return Ok(result);
     }
-    */
+    
+    [HttpDelete("{id:guid}", Name = "DeleteIncome")]
+    public async Task<IActionResult> DeleteIncomeAsync([FromRoute] Guid id)
+    {
+        await _repository.DeleteIncomeAsync(id);
+        
+        return Ok();
+    }
 }
