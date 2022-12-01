@@ -85,14 +85,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
 
         if (existingIncome is null) throw ApiException.NotFound($"Income with id = '{incomeId}' was not found.");
 
-        existingIncome.Revert();
-
-        existingIncome.Amount = request.Amount ?? existingIncome.Amount;
-        existingIncome.Timestamp = request.Timestamp ?? existingIncome.Timestamp;
-        existingIncome.Comment = request.Comment ?? existingIncome.Comment;
-        existingIncome.UpdatedAt = DateTime.UtcNow;
-
-        existingIncome.Apply();
+        existingIncome.Update(request);
 
         await _db.SaveChangesAsync();
 
@@ -118,23 +111,16 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         return expense;
     }
 
-    public async Task<Income> UpdateExpenseAsync(Guid expenseId, ExpenseUpdateRequest request)
+    public async Task<Expense> UpdateExpenseAsync(Guid expenseId, ExpenseUpdateRequest request)
     {
-        var existingExpense = await _db.Set<Income>()
+        var existingExpense = await _db.Set<Expense>()
             .Where(a => a.Id == expenseId)
             .Include(x => x.Account)
             .FirstOrDefaultAsync();
 
         if (existingExpense is null) throw ApiException.NotFound($"Expense with id = '{expenseId}' was not found.");
 
-        existingExpense.Revert();
-
-        existingExpense.Amount = request.Amount ?? existingExpense.Amount;
-        existingExpense.Timestamp = request.Timestamp ?? existingExpense.Timestamp;
-        existingExpense.Comment = request.Comment ?? existingExpense.Comment;
-        existingExpense.UpdatedAt = DateTime.UtcNow;
-
-        existingExpense.Apply();
+        existingExpense.Update(request);
 
         await _db.SaveChangesAsync();
 
@@ -181,15 +167,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
         if (existingTransfer is null)
             throw ApiException.NotFound($"Transfer with id = '{transferId}' was not found.");
 
-        existingTransfer.Revert();
-
-        existingTransfer.SourceAmount = request.SourceAmount ?? existingTransfer.SourceAmount;
-        existingTransfer.TargetAmount = request.TargetAmount ?? existingTransfer.TargetAmount;
-        existingTransfer.Timestamp = request.Timestamp ?? existingTransfer.Timestamp;
-        existingTransfer.Comment = request.Comment ?? existingTransfer.Comment;
-        existingTransfer.UpdatedAt = DateTime.UtcNow;
-
-        existingTransfer.Apply();
+        existingTransfer.Update(request);
 
         await _db.SaveChangesAsync();
 

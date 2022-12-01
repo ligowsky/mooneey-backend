@@ -42,4 +42,19 @@ public class Transfer : Transaction
         if (SourceAccount is not null) SourceAccount.Balance += SourceAmount;
         if (TargetAccount is not null) TargetAccount.Balance -= TargetAmount;
     }
+
+    public void Update(TransferUpdateRequest request)
+    {
+        if (SourceAccount is not null && request.SourceAmount.HasValue)
+            SourceAccount.Balance -= (request.SourceAmount.Value - SourceAmount);
+
+        if (TargetAccount is not null && request.TargetAmount.HasValue)
+            TargetAccount.Balance += (request.TargetAmount.Value - TargetAmount);
+
+        SourceAmount = request.SourceAmount ?? SourceAmount;
+        TargetAmount = request.TargetAmount ?? TargetAmount;
+        Timestamp = request.Timestamp ?? Timestamp;
+        Comment = request.Comment ?? Comment;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

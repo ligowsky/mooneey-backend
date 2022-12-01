@@ -12,7 +12,7 @@ public interface ITransactionRepository
     Task<Income> UpdateIncomeAsync(Guid incomeId, IncomeUpdateRequest request);
 
     Task<Expense> CreateExpenseAsync(ExpenseCreateRequest request);
-    Task<Income> UpdateExpenseAsync(Guid expenseId, ExpenseUpdateRequest request);
+    Task<Expense> UpdateExpenseAsync(Guid expenseId, ExpenseUpdateRequest request);
 
     Task<Transfer> CreateTransferAsync(TransferCreateRequest request);
     Task<Transfer> UpdateTransferAsync(Guid transferId, TransferUpdateRequest request);

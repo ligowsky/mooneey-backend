@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Mooneey.Infrastructure.Migrations
 {
     [DbContext(typeof(PgSqlDbContext))]
-    [Migration("20221129124126_Initial")]
+    [Migration("20221201135044_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

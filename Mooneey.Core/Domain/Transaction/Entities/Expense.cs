@@ -27,4 +27,15 @@ public class Expense : Transaction
     {
         if (Account is not null) Account.Balance += Amount;
     }
+    
+    public void Update(ExpenseUpdateRequest request)
+    {
+        if (Account is not null && request.Amount.HasValue) 
+            Account.Balance -= (request.Amount.Value - Amount);
+
+        Amount = request.Amount ?? Amount;
+        Timestamp = request.Timestamp ?? Timestamp;
+        Comment = request.Comment ?? Comment;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
