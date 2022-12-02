@@ -30,7 +30,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
 
     public async Task<Account> CreateAccountAsync(AccountCreateRequest request)
     {
-        var account = new Account(request.AccountType, request.CurrencyCode, request.Name, request.Balance);
+        var account = Account.Create(request);
 
         await _db.Set<Account>().AddAsync(account);
 
@@ -47,10 +47,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
 
         if (existingAccount is null) throw ApiException.BadRequest($"Account with id = '{id}' was not found.");
 
-        existingAccount.AccountType = request.AccountType ?? existingAccount.AccountType;
-        existingAccount.CurrencyCode = request.CurrencyCode ?? existingAccount.CurrencyCode;
-        existingAccount.Name = request.Name ?? existingAccount.Name;
-        existingAccount.Balance = request.Balance ?? existingAccount.Balance;
+        existingAccount.Update(request);
 
         await _db.SaveChangesAsync();
 

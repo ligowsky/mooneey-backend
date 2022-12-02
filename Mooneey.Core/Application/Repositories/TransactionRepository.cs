@@ -65,7 +65,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
 
         if (account is null) throw ApiException.BadRequest($"Account with id = '{request.AccountId}' was not found.");
 
-        var income = new Income(account, request.Amount, request.Timestamp, request.Comment);
+        var income = Income.Create(account, request);
 
         await _db.AddAsync(income);
 
@@ -100,7 +100,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
 
         if (account is null) throw ApiException.BadRequest($"Account with id = '{request.AccountId}' was not found.");
 
-        var expense = new Expense(account, request.Amount, request.Timestamp, request.Comment);
+        var expense = Expense.Create(account, request);
 
         await _db.AddAsync(expense);
 
@@ -144,8 +144,7 @@ public class TransactionRepository : RepositoryBase, ITransactionRepository
             throw ApiException.BadRequest($"Account with id = '{request.TargetAccountId}' was not found.");
 
 
-        var transfer = new Transfer(sourceAccount, targetAccount, request.SourceAmount, request.TargetAmount,
-            request.Timestamp, request.Comment);
+        var transfer = Transfer.Create(sourceAccount, targetAccount, request);
 
         await _db.AddAsync(transfer);
 

@@ -2,11 +2,8 @@ namespace Mooneey.Domain;
 
 public class Income : Transaction
 {
-    private Income()
-    {
-    }
-
-    public Income(Account account, decimal amount, DateTime timestamp, string? comment)
+    private Income() {}
+    private Income(Account account, decimal amount, DateTime timestamp, string? comment)
     {
         AccountId = account.Id;
         Account = account;
@@ -17,9 +14,9 @@ public class Income : Transaction
         Accounts = new List<Account> { account };
     }
 
-    public Guid AccountId { get; set; }
-    public Account? Account { get; set; }
-    public decimal Amount { get; set; }
+    public Guid AccountId { get; private set; }
+    public Account? Account { get; private set; }
+    public decimal Amount { get; private set; }
 
     public override void Apply()
     {
@@ -29,6 +26,11 @@ public class Income : Transaction
     public override void Revert()
     {
         Account?.UpdateBalance(-Amount);
+    }
+
+    public static Income Create(Account account, IncomeCreateRequest request)
+    {
+        return new Income(account, request.Amount, request.Timestamp, request.Comment);
     }
 
     public void Update(IncomeUpdateRequest request)

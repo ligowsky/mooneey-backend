@@ -3,7 +3,7 @@ using Mooneey.Domain;
 public class Expense : Transaction
 {
     private Expense() {}
-    public Expense(Account account, decimal amount, DateTime timestamp, string? comment)
+    private Expense(Account account, decimal amount, DateTime timestamp, string? comment)
     {
         Account = account;
         AccountId = account.Id;
@@ -14,9 +14,9 @@ public class Expense : Transaction
         Accounts = new List<Account> { account };
     }
 
-    public Guid AccountId { get; set; }
-    public Account? Account { get; set; }
-    public decimal Amount { get; set; }
+    public Guid AccountId { get; private set; }
+    public Account? Account { get; private set; }
+    public decimal Amount { get; private set; }
 
     public override void Apply()
     {
@@ -26,6 +26,11 @@ public class Expense : Transaction
     public override void Revert()
     {
         Account?.UpdateBalance(Amount);
+    }
+    
+    public static Expense Create(Account account, ExpenseCreateRequest request)
+    {
+        return new Expense(account, request.Amount, request.Timestamp, request.Comment);
     }
     
     public void Update(ExpenseUpdateRequest request)
