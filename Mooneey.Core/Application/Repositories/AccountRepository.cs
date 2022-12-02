@@ -10,14 +10,14 @@ public class AccountRepository : RepositoryBase, IAccountRepository
     {
     }
 
-    public async Task<IEnumerable<Account>> GetAllAsync()
+    public async Task<IEnumerable<Account>> GetAccountsAsync()
     {
         var accounts = await _db.Set<Account>().ToListAsync();
 
         return accounts;
     }
 
-    public async Task<Account> GetAsync(Guid id)
+    public async Task<Account> GetAccountAsync(Guid id)
     {
         var account = await _db.Set<Account>()
             .Where(x => x.Id == id)
@@ -28,7 +28,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
         return account;
     }
 
-    public async Task<Account> CreateAsync(AccountCreateRequest request)
+    public async Task<Account> CreateAccountAsync(AccountCreateRequest request)
     {
         var account = new Account(request.AccountType, request.CurrencyCode, request.Name, request.Balance);
 
@@ -39,7 +39,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
         return account;
     }
 
-    public async Task<Account> UpdateAsync(Guid id, AccountUpdateRequest request)
+    public async Task<Account> UpdateAccountAsync(Guid id, AccountUpdateRequest request)
     {
         var existingAccount = await _db.Set<Account>()
             .Where(x => x.Id == id)
@@ -57,7 +57,7 @@ public class AccountRepository : RepositoryBase, IAccountRepository
         return existingAccount;
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAccountAsync(Guid id)
     {
         var existingAccount = await _db.Set<Account>()
             .Where(x => x.Id == id)

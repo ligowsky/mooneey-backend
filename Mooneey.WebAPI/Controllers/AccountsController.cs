@@ -17,48 +17,48 @@ public class AccountsController : Controller
         _transactionRepository = transactionRepository;
     }
 
-    [HttpGet(Name = "GetAllAccounts")]
-    public async Task<IActionResult> GetAllAsync()
+    [HttpGet(Name = "GetAccounts")]
+    public async Task<IActionResult> GetAccountsAsync()
     {
-        var accounts = await _accountRepository.GetAllAsync();
+        var accounts = await _accountRepository.GetAccountsAsync();
         var result = accounts.Select(AccountViewModel.FromDomain);
 
         return Ok(result);
     }
 
     [HttpGet("{id:guid}", Name = "GetAccount")]
-    public async Task<IActionResult> GetAsync([FromRoute] Guid id)
+    public async Task<IActionResult> GetAccountAsync([FromRoute] Guid id)
     {
-        var account = await _accountRepository.GetAsync(id);
+        var account = await _accountRepository.GetAccountAsync(id);
         var result = AccountViewModel.FromDomain(account);
 
         return Ok(result);
     }
 
     [HttpPost(Name = "CreateAccount")]
-    public async Task<IActionResult> CreateAsync([FromBody] AccountCreateRequestViewModel request)
+    public async Task<IActionResult> CreateAccountAsync([FromBody] AccountCreateRequestViewModel request)
     {
         var account = request.ToDomain();
-        var createdAccount = await _accountRepository.CreateAsync(account);
+        var createdAccount = await _accountRepository.CreateAccountAsync(account);
         var result = AccountViewModel.FromDomain(createdAccount);
 
         return CreatedAtRoute("GetAccount", new { result.Id }, result);
     }
 
     [HttpPut("{id:guid}", Name = "UpdateAccount")]
-    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] AccountUpdateRequestViewModel request)
+    public async Task<IActionResult> UpdateAccountAsync([FromRoute] Guid id, [FromBody] AccountUpdateRequestViewModel request)
     {
         var account = request.ToDomain();
-        var updatedAccount = await _accountRepository.UpdateAsync(id, account);
+        var updatedAccount = await _accountRepository.UpdateAccountAsync(id, account);
         var result = AccountViewModel.FromDomain(updatedAccount);
 
         return Ok(result);
     }
 
     [HttpDelete("{id:guid}", Name = "DeleteAccount")]
-    public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
+    public async Task<IActionResult> DeleteAccountAsync([FromRoute] Guid id)
     {
-        await _accountRepository.DeleteAsync(id);
+        await _accountRepository.DeleteAccountAsync(id);
 
         return Ok();
     }
